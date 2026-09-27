@@ -92,7 +92,7 @@ function renderService(service) {
     <section class="detail-section faq-section"><div class="section-heading"><span class="detail-kicker">PERGUNTAS FREQUENTES</span><h2>Antes do próximo<br><em>movimento.</em></h2></div><div class="faq-list">${service.faqs.map(([question, answer]) => `<details><summary>${esc(question)}<span>+</span></summary><p>${esc(answer)}</p></details>`).join('')}</div></section>
     <section class="detail-section related-section"><span class="detail-kicker">SERVIÇOS RELACIONADOS</span><div class="related-grid">${service.related.map((slug) => { const item = serviceBySlug[slug]; return `<a href="${base}servicos/${item.slug}/"><span>${item.eyebrow}</span><h3>${item.name}</h3><b>↗</b></a>` }).join('')}</div></section>
     ${cta(base, `Vamos colocar ${service.name.toLowerCase()} em movimento?`)}
-  `
+`
   return shell({
     title: `${service.name} com estratégia | Oriz Marketing`,
     description: `${service.promise} Conheça a abordagem da Oriz para ${service.name.toLowerCase()}, as entregas, o processo e quem conduz o trabalho.`,
@@ -115,7 +115,7 @@ function renderCity(city) {
     <section class="detail-section faq-section"><div class="section-heading"><span class="detail-kicker">PERGUNTAS FREQUENTES</span><h2>Atendimento em<br><em>${esc(city.name)}.</em></h2></div><div class="faq-list">${city.faqs.map(([question, answer]) => `<details><summary>${esc(question)}<span>+</span></summary><p>${esc(answer)}</p></details>`).join('')}</div></section>
     <section class="detail-section link-section"><div class="section-heading"><span class="detail-kicker">OUTROS CONTEXTOS</span><h2>Conexões pela<br><em>região.</em></h2></div><div class="text-link-grid">${cities.filter((item) => item.slug !== city.slug).map((item) => `<a href="${base}cidades/${item.slug}/">${item.name}<span>↗</span></a>`).join('')}</div></section>
     ${cta(base, `Vamos construir a próxima fase da sua marca em ${city.name}?`)}
-  `
+`
   return shell({
     title: `Marketing digital em ${city.name} | Oriz Marketing`,
     description: `${city.promise} Conheça os serviços de estratégia, tráfego, sites, SEO e marca da Oriz para empresas em ${city.name}.`,
