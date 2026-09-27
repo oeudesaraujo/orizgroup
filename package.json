@@ -1,0 +1,9 @@
+{
+  "name": "oriz-marketing-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/generate-pages.cjs",
+    "test": "node scripts/verify-site.cjs"
+  }
+}

@@ -1,21 +1,40 @@
-# Oriz Marketing — V1
+# Oriz Marketing — site institucional
 
-Home responsiva em HTML, CSS e JavaScript. Sirva esta pasta com um servidor estático para habilitar os módulos e o carregamento do SVG da hero. Bibliotecas 3D incluídas em vendor, com licença MIT.
+Site estático, responsivo e sem backend, construído em HTML, CSS e JavaScript. A Home apresenta a marca; seis páginas de serviço e seis páginas de cidade aprofundam a atuação da Oriz.
 
-## Símbolo tridimensional
-O SVG oficial é extrudido em tempo real em brand-3d.js: profundidade de 220 unidades, bordas suavizadas, material laranja e iluminação de estúdio. A rotação responde ao tempo, cursor e scroll. Inclui pausa, movimento reduzido e fallback vetorial. A geração de imagem integrada foi usada no estudo inicial icone-oriz-3d-conceito.png; a hero final usa a geometria do SVG, não essa imagem. Prompt do estudo: escultura laranja acetinada, preservar a metade sólida e as quatro faixas, extrusão, câmera quase frontal em três quartos, luz de estúdio e fundo transparente.
+## Estrutura
 
-## Conteúdo editável
-- Cores, fontes e espaçamento: styles.css, variáveis no início.
-- Copy, cidades e perfis: index.html.
-- Descrições interativas de serviços e método: app.js.
-- Insights: insights.html, estado inicial sem artigos fictícios.
+- `/index.html`: Home institucional.
+- `/servicos/`: índice e páginas de Tráfego Pago, Estratégia de Marketing, Criação de Sites, SEO, Criação de Marca e Branding.
+- `/cidades/`: índice e páginas de Itapipoca, Fortaleza, Trairi, Amontada, Itapajé e Sobral.
+- `/content/site-content.cjs`: copy, responsáveis, entregas, processos e FAQs das páginas geradas.
+- `/content/page-template.cjs`: templates compartilhados.
+- `/scripts/generate-pages.cjs`: geração determinística do HTML.
+- `/scripts/verify-site.cjs`: auditoria de rotas, links, metadados, schemas e responsáveis.
 
-## Antes de publicar
-Adicionar marca oficial, fotos de Eudes e Wallyson, bios definitivas, WhatsApp/e-mail, domínio e confirmação das cidades de atuação. O contato está explicitamente em modo de prévia; não envia dados. A tipografia usa Google Fonts com alternativas locais.
+## Atualizar páginas
 
-## Expansão
-Reutilizar header, footer, tokens, módulos e hierarquia editorial para /servicos/[servico], /cidades/[cidade], /insights/[artigo] e /contato. Na V1, os serviços abrem detalhes acessíveis em diálogo. As cidades são uma apresentação regional, sem páginas duplicadas. Criar conteúdo específico para cada página local antes de indexá-la. Configurar URL canônica e sitemap após definição do domínio real.
+Na pasta do site:
 
-## Interações
-Menu mobile com estado acessível e fechamento por Escape; detalhes de serviços em diálogo nativo; cinco etapas do método selecionáveis; âncoras; entrada suave de elementos com respeito a movimento reduzido; layout adaptado a celular, tablet e desktop.
+```sh
+node scripts/generate-pages.cjs
+node scripts/verify-site.cjs
+```
+
+O primeiro comando regenera as páginas e o `sitemap.xml`. O segundo confirma 14 páginas, links internos, metadados únicos e a autoria correta de cada serviço.
+
+## Responsáveis
+
+- Wallyson: Tráfego Pago e Estratégia de Marketing.
+- Eudes: Criação de Sites, SEO, Criação de Marca e Branding.
+
+As bios pessoais permanecem em Lorem Ipsum até o envio dos textos definitivos.
+
+## Antes do lançamento comercial
+
+- Conectar WhatsApp e e-mail oficiais no CTA.
+- Substituir as bios e os retratos temporários de Eudes e Wallyson.
+- Confirmar o domínio e trocar os caminhos relativos do sitemap por URLs absolutas.
+- Definir uma imagem Open Graph oficial.
+
+Não há cases, métricas, endereço físico, depoimentos ou certificações inventadas. A tipografia usa Google Fonts com alternativas locais; bibliotecas 3D estão incluídas em `vendor/` com suas licenças.
