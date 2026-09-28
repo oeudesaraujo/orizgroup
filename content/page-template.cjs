@@ -1,4 +1,8 @@
 const { owners, services, cities } = require('./site-content.cjs')
+const {
+  origin, ids, ref, graph, personSchema, organizationSchema, websiteSchema,
+  webpageSchema, breadcrumbSchema, faqSchema, itemListSchema,
+} = require('./schema.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
@@ -82,6 +86,11 @@ function visual(kind) {
 function renderService(service) {
   const base = '../../'
   const owner = owners[service.owner]
+  const url = `${origin}/servicos/${service.slug}/`
+  const title = `${service.name} com estratégia | Oriz Marketing`
+  const description = `${service.promise} Conheça a abordagem da Oriz para ${service.name.toLowerCase()}, as entregas, o processo e quem conduz o trabalho.`
+  const breadcrumbId = `${url}#breadcrumb`
+  const serviceId = `${url}#service`
   const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
   const content = `<section class="detail-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}contato/">Começar uma conversa <span>↗</span></a></div>
@@ -97,16 +106,42 @@ function renderService(service) {
     ${cta(base, `Vamos colocar ${service.name.toLowerCase()} em movimento?`)}
 `
   return shell({
-    title: `${service.name} com estratégia | Oriz Marketing`,
-    description: `${service.promise} Conheça a abordagem da Oriz para ${service.name.toLowerCase()}, as entregas, o processo e quem conduz o trabalho.`,
+    title,
+    description,
     canonicalPath: `/servicos/${service.slug}/`,
     base, bodyClass: `service-page service-${service.slug}`, breadcrumb, content,
-    schema: { '@context': 'https://schema.org', '@type': 'Service', name: service.name, provider: { '@type': 'ProfessionalService', name: 'Oriz Marketing' }, description: service.promise, areaServed: cities.map((city) => city.name) },
+    schema: graph(
+      organizationSchema(),
+      websiteSchema(),
+      personSchema(service.owner),
+      webpageSchema({ type: 'WebPage', url, name: title, description, breadcrumbId, mainEntityId: serviceId }),
+      breadcrumbSchema(url, [
+        { name: 'Início', url: `${origin}/` },
+        { name: 'Serviços', url: `${origin}/servicos/` },
+        { name: service.name, url },
+      ]),
+      {
+        '@type': 'Service',
+        '@id': serviceId,
+        name: service.name,
+        description: service.promise,
+        url,
+        category: service.name,
+        provider: [ref(ids.organization), ref(ids[service.owner])],
+        areaServed: cities.map((city) => ({ '@type': 'City', name: city.name })),
+      },
+      faqSchema(url, service.faqs),
+    ),
   })
 }
 
 function renderCity(city) {
   const base = '../../'
+  const url = `${origin}/cidades/${city.slug}/`
+  const title = `Marketing digital em ${city.name} | Oriz Marketing`
+  const description = `${city.promise} Conheça os serviços de estratégia, tráfego, sites, SEO e marca da Oriz para empresas em ${city.name}.`
+  const breadcrumbId = `${url}#breadcrumb`
+  const regionalServiceId = `${url}#service`
   const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
   const content = `<section class="detail-hero city-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}contato/">Conversar sobre o negócio <span>↗</span></a></div>
@@ -121,11 +156,48 @@ function renderCity(city) {
     ${cta(base, `Vamos construir a próxima fase da sua marca em ${city.name}?`)}
 `
   return shell({
-    title: `Marketing digital em ${city.name} | Oriz Marketing`,
-    description: `${city.promise} Conheça os serviços de estratégia, tráfego, sites, SEO e marca da Oriz para empresas em ${city.name}.`,
+    title,
+    description,
     canonicalPath: `/cidades/${city.slug}/`,
     base, bodyClass: `city-page city-${city.slug}`, breadcrumb, content,
-    schema: { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: `Oriz Marketing — ${city.name}`, description: city.promise, areaServed: { '@type': 'City', name: city.name }, knowsAbout: services.map((service) => service.name) },
+    schema: graph(
+      organizationSchema(),
+      websiteSchema(),
+      personSchema('Eudes'),
+      personSchema('Wallyson'),
+      webpageSchema({
+        type: 'WebPage',
+        url,
+        name: title,
+        description,
+        about: { '@type': 'City', name: city.name },
+        breadcrumbId,
+        mainEntityId: regionalServiceId,
+      }),
+      breadcrumbSchema(url, [
+        { name: 'Início', url: `${origin}/` },
+        { name: 'Cidades', url: `${origin}/cidades/` },
+        { name: city.name, url },
+      ]),
+      {
+        '@type': 'Service',
+        '@id': regionalServiceId,
+        name: `Marketing digital em ${city.name}`,
+        description: city.promise,
+        url,
+        provider: ref(ids.organization),
+        areaServed: { '@type': 'City', name: city.name },
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Serviços da Oriz',
+          itemListElement: services.map((service) => ({
+            '@type': 'Offer',
+            itemOffered: ref(`${origin}/servicos/${service.slug}/#service`),
+          })),
+        },
+      },
+      faqSchema(url, city.faqs),
+    ),
   })
 }
 
@@ -147,12 +219,29 @@ function renderIndex(type) {
     ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${owners[item.owner].name} ↗</b></a>`
     : `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.focus}</p><b>CONHECER ↗</b></a>`).join('')
   const category = isServices ? 'Serviços' : 'Cidades'
+  const canonicalPath = isServices ? '/servicos/' : '/cidades/'
+  const url = `${origin}${canonicalPath}`
+  const breadcrumbId = `${url}#breadcrumb`
   const breadcrumb = `<a href="${base}">Início</a><span>→</span><strong>${category}</strong>`
   const content = `<section class="index-hero detail-section"><span class="detail-kicker">${isServices ? 'CAPACIDADES ORIZ' : 'PRESENÇA REGIONAL'}</span><h1>${h1}</h1><p>${intro}</p></section><section class="detail-section directory-grid">${cards}</section>${cta(base, isServices ? 'Qual frente precisa ganhar direção agora?' : 'Onde está o próximo movimento da sua marca?')}`
   return shell({
     title, description, base, bodyClass: `${isServices ? 'services' : 'cities'}-index`, breadcrumb, content,
-    canonicalPath: isServices ? '/servicos/' : '/cidades/',
-    schema: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: category, description },
+    canonicalPath,
+    schema: graph(
+      organizationSchema(),
+      websiteSchema(),
+      personSchema('Eudes'),
+      personSchema('Wallyson'),
+      webpageSchema({ type: 'CollectionPage', url, name: title, description, breadcrumbId, mainEntityId: `${url}#items` }),
+      breadcrumbSchema(url, [
+        { name: 'Início', url: `${origin}/` },
+        { name: category, url },
+      ]),
+      itemListSchema(url, category, items.map((item) => ({
+        name: item.name,
+        url: `${url}${item.slug}/`,
+      }))),
+    ),
   })
 }
 

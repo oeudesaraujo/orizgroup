@@ -41,6 +41,12 @@ const canonicalPages = new Map([
   ...Object.keys(services).map((slug) => [`servicos/${slug}/index.html`, `${productionOrigin}/servicos/${slug}/`]),
   ...cities.map((slug) => [`cidades/${slug}/index.html`, `${productionOrigin}/cidades/${slug}/`]),
 ])
+const organizationId = `${productionOrigin}/#organization`
+const websiteId = `${productionOrigin}/#website`
+const personIds = {
+  Eudes: `${productionOrigin}/#eudes-araujo`,
+  Wallyson: `${productionOrigin}/#wallyson-dias`,
+}
 const assetVersion = 'v=oriz-20260928-4'
 const assetPages = ['index.html', 'insights.html', 'contato/index.html', ...expectedPages]
 const team = {
@@ -65,6 +71,25 @@ function check(condition, message) {
 
 function capture(html, pattern) {
   return html.match(pattern)?.[1]?.replace(/<[^>]+>/g, '').trim() || ''
+}
+
+function parseJsonLd(html, relative) {
+  const scripts = [...html.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
+  check(scripts.length === 1, `JSON-LD único ausente: ${relative}`)
+  if (scripts.length !== 1) return null
+  try {
+    return JSON.parse(scripts[0][1])
+  } catch (error) {
+    check(false, `JSON-LD inválido em ${relative}: ${error.message}`)
+    return null
+  }
+}
+
+function graphNode(schema, type) {
+  return schema?.['@graph']?.find((node) => {
+    const nodeTypes = Array.isArray(node['@type']) ? node['@type'] : [node['@type']]
+    return nodeTypes.includes(type)
+  })
 }
 
 for (const relative of assetPages) {
@@ -138,7 +163,7 @@ for (const slug of cities) {
   check(html.includes('data-visual="city"'), `Identidade visual de cidade ausente em ${relative}`)
   check(html.includes('glass-layer--front') && html.includes('visual-scan'), `Sistema glassmorphism incompleto em ${relative}`)
   check(!html.includes(`<span>${visualLabels[slug]}</span>`), `Nome duplicado dentro da ilustração em ${relative}`)
-  check(html.includes('"@type":"ProfessionalService"'), `Schema ProfessionalService ausente: ${relative}`)
+  check(html.includes('"@type":"Service"'), `Schema de serviço regional ausente: ${relative}`)
 }
 
 const accidentalCombinations = []
@@ -176,6 +201,45 @@ for (const [relative, canonical] of canonicalPages) {
   check(matches.length === 1, `Canonical único ausente: ${relative}`)
   check(matches[0]?.[1] === canonical, `Canonical incorreto em ${relative}: esperado ${canonical}`)
   check(!/href="(?:\.\.\/)*index\.html(?:[?#][^"]*)?"/i.test(html), `Link interno aponta para index.html em ${relative}`)
+
+  const schema = parseJsonLd(html, relative)
+  check(schema?.['@context'] === 'https://schema.org', `Contexto Schema.org ausente: ${relative}`)
+  check(Array.isArray(schema?.['@graph']), `JSON-LD precisa usar @graph: ${relative}`)
+  const page = graphNode(schema, relative === 'contato/index.html' ? 'ContactPage' : relative.endsWith('/index.html') && !relative.startsWith('servicos/') && !relative.startsWith('cidades/') ? 'WebPage' : relative === 'servicos/index.html' || relative === 'cidades/index.html' || relative === 'insights.html' ? 'CollectionPage' : 'WebPage')
+  check(Boolean(page), `Entidade principal da página ausente: ${relative}`)
+  check(page?.url === canonical, `URL da entidade principal incorreta: ${relative}`)
+  check(page?.isPartOf?.['@id'] === websiteId, `Relação com WebSite ausente: ${relative}`)
+  check(page?.publisher?.['@id'] === organizationId, `Relação com a Oriz ausente: ${relative}`)
+}
+
+const homeSchema = parseJsonLd(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), 'index.html')
+check(graphNode(homeSchema, 'Organization')?.['@id'] === organizationId, 'Entidade central da Oriz ausente na Home')
+check(graphNode(homeSchema, 'WebSite')?.['@id'] === websiteId, 'Entidade WebSite ausente na Home')
+for (const [key, person] of Object.entries(team)) {
+  const node = homeSchema?.['@graph']?.find((item) => item['@id'] === personIds[key])
+  check(node?.['@type'] === 'Person' && node.name === person.name, `Pessoa não conectada à Oriz: ${person.name}`)
+  check(node?.worksFor?.['@id'] === organizationId, `Vínculo profissional ausente: ${person.name}`)
+}
+
+for (const [slug, owner] of Object.entries(services)) {
+  const relative = `servicos/${slug}/index.html`
+  const schema = parseJsonLd(fs.readFileSync(path.join(root, relative), 'utf8'), relative)
+  const service = graphNode(schema, 'Service')
+  const providerIds = Array.isArray(service?.provider) ? service.provider.map((item) => item['@id']) : []
+  check(providerIds.includes(organizationId), `Service sem Oriz como provedora: ${relative}`)
+  check(providerIds.includes(personIds[owner]), `Service sem responsável correto: ${relative}`)
+  check(Boolean(graphNode(schema, 'BreadcrumbList')), `BreadcrumbList ausente: ${relative}`)
+  check(Boolean(graphNode(schema, 'FAQPage')), `FAQPage ausente: ${relative}`)
+}
+
+for (const slug of cities) {
+  const relative = `cidades/${slug}/index.html`
+  const schema = parseJsonLd(fs.readFileSync(path.join(root, relative), 'utf8'), relative)
+  const page = graphNode(schema, 'WebPage')
+  check(page?.about?.['@type'] === 'City' && page.about.name === visualLabels[slug], `Cidade incorreta no schema: ${relative}`)
+  check(Boolean(graphNode(schema, 'BreadcrumbList')), `BreadcrumbList ausente: ${relative}`)
+  check(Boolean(graphNode(schema, 'FAQPage')), `FAQPage ausente: ${relative}`)
+  check(!schema?.['@graph']?.some((node) => node['@type'] === 'LocalBusiness'), `Página regional não deve declarar filial física: ${relative}`)
 }
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8')
