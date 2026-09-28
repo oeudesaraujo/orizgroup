@@ -17,8 +17,18 @@ const expectedPages = [
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
-const assetVersion = 'v=oriz-20260927-1'
+const assetVersion = 'v=oriz-20260928-1'
 const assetPages = ['index.html', 'insights.html', ...expectedPages]
+const team = {
+  Eudes: {
+    name: 'Eudes Araújo',
+    photo: 'assets/equipe/eudes-araujo.png',
+  },
+  Wallyson: {
+    name: 'Wallyson Dias',
+    photo: 'assets/equipe/wallyson-dias.png',
+  },
+}
 
 const failures = []
 const titles = new Map()
@@ -86,7 +96,8 @@ for (const [slug, owner] of Object.entries(services)) {
   const filename = path.join(root, relative)
   if (!fs.existsSync(filename)) continue
   const html = fs.readFileSync(filename, 'utf8')
-  check(html.includes(`data-owner="${owner}"`), `Responsável incorreto em ${relative}: esperado ${owner}`)
+  check(html.includes(`data-owner="${team[owner].name}"`), `Responsável incorreto em ${relative}: esperado ${team[owner].name}`)
+  check(html.includes(`src="../../${team[owner].photo}"`), `Foto do responsável ausente em ${relative}`)
   check(html.includes('"@type":"Service"'), `Schema Service ausente: ${relative}`)
 }
 
@@ -95,7 +106,8 @@ for (const slug of cities) {
   const filename = path.join(root, relative)
   if (!fs.existsSync(filename)) continue
   const html = fs.readFileSync(filename, 'utf8')
-  check(html.includes('data-owner="Eudes"') && html.includes('data-owner="Wallyson"'), `Equipe incompleta: ${relative}`)
+  check(html.includes('data-owner="Eudes Araújo"') && html.includes('data-owner="Wallyson Dias"'), `Equipe incompleta: ${relative}`)
+  check(html.includes(`src="../../${team.Eudes.photo}"`) && html.includes(`src="../../${team.Wallyson.photo}"`), `Fotos da equipe ausentes: ${relative}`)
   check(html.includes('"@type":"ProfessionalService"'), `Schema ProfessionalService ausente: ${relative}`)
 }
 
@@ -106,6 +118,16 @@ for (const city of cities) {
   }
 }
 check(accidentalCombinations.length === 0, `Combinações não aprovadas: ${accidentalCombinations.join(', ')}`)
+
+for (const person of Object.values(team)) {
+  check(fs.existsSync(path.join(root, person.photo)), `Foto ausente: ${person.photo}`)
+}
+
+const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8')
+check(home.includes('Eudes Araújo') && home.includes('Wallyson Dias'), 'Nomes completos ausentes na Home')
+check(home.includes(`src="${team.Eudes.photo}"`) && home.includes(`src="${team.Wallyson.photo}"`), 'Fotos da equipe ausentes na Home')
+check(home.includes('Graduando em Direito'), 'Formação em Direito de Wallyson ausente na Home')
+check(home.includes('mercado jurídico') && home.includes('contexto empresarial'), 'Foco jurídico e empresarial de Wallyson ausente na Home')
 
 if (failures.length) {
   console.error(`FALHOU — ${failures.length} problema(s)\n${failures.map((item) => `- ${item}`).join('\n')}`)

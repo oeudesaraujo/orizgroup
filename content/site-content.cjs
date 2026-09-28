@@ -1,15 +1,17 @@
 const owners = {
   Eudes: {
-    name: 'Eudes',
+    name: 'Eudes Araújo',
     role: 'Sites, SEO, criação de marca e branding',
-    initial: 'E.',
+    photo: 'assets/equipe/eudes-araujo.png',
+    photoAlt: 'Eudes Araújo, responsável por sites, SEO, criação de marca e branding na Oriz',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   Wallyson: {
-    name: 'Wallyson',
-    role: 'Tráfego e estratégia de marketing',
-    initial: 'W.',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    name: 'Wallyson Dias',
+    role: 'Tráfego, estratégia de marketing e visão de negócios',
+    photo: 'assets/equipe/wallyson-dias.png',
+    photoAlt: 'Wallyson Dias, responsável por tráfego e estratégia de marketing na Oriz',
+    bio: 'Wallyson Dias conduz as frentes de tráfego e estratégia da Oriz. Graduando em Direito, desenvolve um olhar especialmente atento ao mercado jurídico e ao contexto empresarial, conectando comunicação, aquisição e visão de negócio para identificar soluções que vão além da presença digital.',
   },
 }
 

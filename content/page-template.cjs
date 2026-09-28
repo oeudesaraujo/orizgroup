@@ -2,7 +2,7 @@ const { owners, services, cities } = require('./site-content.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260927-1'
+const assetVersion = '?v=oriz-20260928-1'
 
 function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
@@ -68,7 +68,7 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
 function ownerCard(name, base, compact = false) {
   const owner = owners[name]
   return `<article class="owner-card${compact ? ' owner-card--compact' : ''}" data-owner="${owner.name}">
-    <div class="owner-portrait"><span class="mono">ORIZ · PESSOAS</span><b>${owner.initial}</b><img src="${base}icone-oriz.svg" alt="" aria-hidden="true"></div>
+    <div class="owner-portrait"><img src="${base}${owner.photo}" alt="${esc(owner.photoAlt)}" width="947" height="${name === 'Wallyson' ? '805' : '837'}" loading="lazy" decoding="async"><span class="mono owner-photo-label">ORIZ · PESSOAS</span><span class="mono owner-photo-note">DIFERENTES OLHARES · UMA DIREÇÃO</span></div>
     <div><span class="detail-kicker">QUEM CONDUZ</span><h3>${owner.name}</h3><p class="owner-role">${owner.role}</p><p>${owner.bio}</p></div>
   </article>`
 }
@@ -110,7 +110,7 @@ function renderCity(city) {
       <div class="detail-hero-side">${visual('city', city.name)}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">ENTENDER ANTES DE AGIR</span><h2>${esc(city.context)}</h2></section>
-    <section class="detail-section city-services"><div class="section-heading"><span class="detail-kicker">CAPACIDADES CONECTADAS</span><h2>Seis frentes.<br><em>Uma mesma direção.</em></h2></div><div class="service-card-grid">${services.map((service) => `<a href="${base}servicos/${service.slug}/"><span>${service.eyebrow}</span><h3>${service.name}</h3><p>${service.promise}</p><b>${service.owner} ↗</b></a>`).join('')}</div></section>
+    <section class="detail-section city-services"><div class="section-heading"><span class="detail-kicker">CAPACIDADES CONECTADAS</span><h2>Seis frentes.<br><em>Uma mesma direção.</em></h2></div><div class="service-card-grid">${services.map((service) => `<a href="${base}servicos/${service.slug}/"><span>${service.eyebrow}</span><h3>${service.name}</h3><p>${service.promise}</p><b>${owners[service.owner].name} ↗</b></a>`).join('')}</div></section>
     <section class="detail-section regional-section"><div><span class="detail-kicker">COMO TRABALHAMOS</span><h2>Proximidade não depende<br><em>de estar na mesma sala.</em></h2></div><div><p>O processo combina conversas objetivas, apresentação de decisões e ciclos claros de validação. Quando um encontro presencial agrega ao projeto, ele pode ser alinhado conforme contexto e disponibilidade.</p><ul><li>Diagnóstico com contexto local</li><li>Rotina remota organizada</li><li>Decisões registradas</li><li>Entregas conectadas ao objetivo</li></ul></div></section>
     <section class="detail-section team-section"><div class="section-heading"><span class="detail-kicker">QUEM FAZ ACONTECER</span><h2>Duas especialidades.<br><em>Uma direção.</em></h2></div><div class="team-grid">${ownerCard('Wallyson', base, true)}${ownerCard('Eudes', base, true)}</div></section>
     <section class="detail-section faq-section"><div class="section-heading"><span class="detail-kicker">PERGUNTAS FREQUENTES</span><h2>Atendimento em<br><em>${esc(city.name)}.</em></h2></div><div class="faq-list">${city.faqs.map(([question, answer]) => `<details><summary>${esc(question)}<span>+</span></summary><p>${esc(answer)}</p></details>`).join('')}</div></section>
@@ -140,7 +140,7 @@ function renderIndex(type) {
   const h1 = isServices ? 'Serviços que<br><em>trabalham juntos.</em>' : 'Estratégia próxima<br><em>de cada contexto.</em>'
   const intro = isServices ? 'Especialidades diferentes ganham força quando compartilham uma direção.' : 'Atuação regional sem fórmulas copiadas de uma cidade para outra.'
   const cards = items.map((item) => isServices
-    ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${item.owner} ↗</b></a>`
+    ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${owners[item.owner].name} ↗</b></a>`
     : `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.focus}</p><b>CONHECER ↗</b></a>`).join('')
   const category = isServices ? 'Serviços' : 'Cidades'
   const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><strong>${category}</strong>`
