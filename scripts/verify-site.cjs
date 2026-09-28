@@ -17,7 +17,7 @@ const expectedPages = [
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
-const assetVersion = 'v=oriz-20260928-1'
+const assetVersion = 'v=oriz-20260928-2'
 const assetPages = ['index.html', 'insights.html', ...expectedPages]
 const team = {
   Eudes: {

@@ -4,7 +4,7 @@ const owners = {
     role: 'Sites, SEO, criação de marca e branding',
     photo: 'assets/equipe/eudes-araujo.png',
     photoAlt: 'Eudes Araújo, responsável por sites, SEO, criação de marca e branding na Oriz',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    bio: 'Eudes Araújo atua há nove anos nas áreas de design e construção de marcas. Ao longo de sua trajetória, participou de projetos para empresas como Coca-Cola, Fixanet, Aposto, Esporte da Sorte e Fila, entre outras. A experiência em diferentes mercados consolidou uma visão estratégica sobre branding: marcas relevantes são construídas com coerência, consistência e presença contínua em cada ponto de contato.',
   },
   Wallyson: {
     name: 'Wallyson Dias',

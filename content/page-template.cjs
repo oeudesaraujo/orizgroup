@@ -2,7 +2,7 @@ const { owners, services, cities } = require('./site-content.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260928-1'
+const assetVersion = '?v=oriz-20260928-2'
 
 function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
