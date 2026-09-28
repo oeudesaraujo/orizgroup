@@ -3,12 +3,13 @@ const { owners, services, cities } = require('./site-content.cjs')
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
 const assetVersion = '?v=oriz-20260928-4'
+const productionOrigin = 'https://orizgroup.com.br'
 
-function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
+function shell({ title, description, canonicalPath, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
-    ['ORIZ', `${base}index.html#oriz`],
+    ['ORIZ', `${base}#oriz`],
     ['SERVIÇOS', `${base}servicos/`],
-    ['COMO TRABALHAMOS', `${base}index.html#metodo`],
+    ['COMO TRABALHAMOS', `${base}#metodo`],
     ['INSIGHTS', `${base}insights.html`],
     ['VAMOS CONVERSAR', `${base}contato/`],
   ]
@@ -25,6 +26,7 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <title>${esc(title)}</title>
+  <link rel="canonical" href="${productionOrigin}${canonicalPath}">
   <link rel="icon" href="${base}icone-oriz.svg" type="image/svg+xml">
   <link rel="stylesheet" href="${base}styles.css${assetVersion}">
   <link rel="stylesheet" href="${base}menu.css${assetVersion}">
@@ -38,13 +40,13 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
 <body class="detail-page ${bodyClass}">
   <a class="skip" href="#main">Pular para o conteúdo</a>
   <header class="header detail-header">
-    <a class="logo" href="${base}index.html" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a>
+    <a class="logo" href="${base}" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span class="menu-lines" aria-hidden="true"></span></button>
   </header>
   <dialog id="navigation" class="fullscreen-menu" aria-label="Menu principal">
     <div class="menu-shell">
       <div class="menu-links-panel">
-        <div class="menu-topline"><a class="logo" href="${base}index.html" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a><span class="menu-caption">CONEXÕES QUE CONSTROEM.</span></div>
+        <div class="menu-topline"><a class="logo" href="${base}" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a><span class="menu-caption">CONEXÕES QUE CONSTROEM.</span></div>
         <nav aria-label="Navegação principal">${nav.map(([label, href], index) => `<a href="${href}">${label}${index === nav.length - 1 ? '<span aria-hidden="true">↗</span>' : ''}</a>`).join('')}</nav>
         <div class="menu-bottomline">Estratégia, criatividade e performance.<br>Na mesma direção.</div>
       </div>
@@ -58,7 +60,7 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
   </main>
   <footer class="section footer detail-footer">
     <div class="footer-top"><p>Estratégia, criatividade e performance.<br>Na mesma direção.</p><a href="#main" class="back-top">VOLTAR AO TOPO ↑</a></div>
-    <a class="footer-logo" href="${base}index.html" aria-label="Oriz, início">oriz<span>®</span></a>
+    <a class="footer-logo" href="${base}" aria-label="Oriz, início">oriz<span>®</span></a>
     <div class="footer-bottom"><span>© <span id="year">2026</span> Oriz Marketing</span><div><a href="${base}servicos/">Serviços</a><a href="${base}cidades/">Cidades</a><a href="${base}insights.html">Insights</a><a href="${base}contato/">Contato</a></div><span>FEITO DE CONEXÕES.</span></div>
   </footer>
 </body>
@@ -80,7 +82,7 @@ function visual(kind) {
 function renderService(service) {
   const base = '../../'
   const owner = owners[service.owner]
-  const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
   const content = `<section class="detail-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}contato/">Começar uma conversa <span>↗</span></a></div>
       <div class="detail-hero-side">${visual(service.slug)}<p>LIDERADO POR <strong>${owner.name}</strong><br>${owner.role}</p></div>
@@ -97,6 +99,7 @@ function renderService(service) {
   return shell({
     title: `${service.name} com estratégia | Oriz Marketing`,
     description: `${service.promise} Conheça a abordagem da Oriz para ${service.name.toLowerCase()}, as entregas, o processo e quem conduz o trabalho.`,
+    canonicalPath: `/servicos/${service.slug}/`,
     base, bodyClass: `service-page service-${service.slug}`, breadcrumb, content,
     schema: { '@context': 'https://schema.org', '@type': 'Service', name: service.name, provider: { '@type': 'ProfessionalService', name: 'Oriz Marketing' }, description: service.promise, areaServed: cities.map((city) => city.name) },
   })
@@ -104,7 +107,7 @@ function renderService(service) {
 
 function renderCity(city) {
   const base = '../../'
-  const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
   const content = `<section class="detail-hero city-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}contato/">Conversar sobre o negócio <span>↗</span></a></div>
       <div class="detail-hero-side">${visual('city')}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
@@ -120,6 +123,7 @@ function renderCity(city) {
   return shell({
     title: `Marketing digital em ${city.name} | Oriz Marketing`,
     description: `${city.promise} Conheça os serviços de estratégia, tráfego, sites, SEO e marca da Oriz para empresas em ${city.name}.`,
+    canonicalPath: `/cidades/${city.slug}/`,
     base, bodyClass: `city-page city-${city.slug}`, breadcrumb, content,
     schema: { '@context': 'https://schema.org', '@type': 'ProfessionalService', name: `Oriz Marketing — ${city.name}`, description: city.promise, areaServed: { '@type': 'City', name: city.name }, knowsAbout: services.map((service) => service.name) },
   })
@@ -143,10 +147,11 @@ function renderIndex(type) {
     ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${owners[item.owner].name} ↗</b></a>`
     : `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.focus}</p><b>CONHECER ↗</b></a>`).join('')
   const category = isServices ? 'Serviços' : 'Cidades'
-  const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><strong>${category}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>→</span><strong>${category}</strong>`
   const content = `<section class="index-hero detail-section"><span class="detail-kicker">${isServices ? 'CAPACIDADES ORIZ' : 'PRESENÇA REGIONAL'}</span><h1>${h1}</h1><p>${intro}</p></section><section class="detail-section directory-grid">${cards}</section>${cta(base, isServices ? 'Qual frente precisa ganhar direção agora?' : 'Onde está o próximo movimento da sua marca?')}`
   return shell({
     title, description, base, bodyClass: `${isServices ? 'services' : 'cities'}-index`, breadcrumb, content,
+    canonicalPath: isServices ? '/servicos/' : '/cidades/',
     schema: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: category, description },
   })
 }

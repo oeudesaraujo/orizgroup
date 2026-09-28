@@ -32,6 +32,15 @@ const expectedPages = [
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
+const canonicalPages = new Map([
+  ['index.html', `${productionOrigin}/`],
+  ['insights.html', `${productionOrigin}/insights.html`],
+  ['contato/index.html', `${productionOrigin}/contato/`],
+  ['servicos/index.html', `${productionOrigin}/servicos/`],
+  ['cidades/index.html', `${productionOrigin}/cidades/`],
+  ...Object.keys(services).map((slug) => [`servicos/${slug}/index.html`, `${productionOrigin}/servicos/${slug}/`]),
+  ...cities.map((slug) => [`cidades/${slug}/index.html`, `${productionOrigin}/cidades/${slug}/`]),
+])
 const assetVersion = 'v=oriz-20260928-4'
 const assetPages = ['index.html', 'insights.html', 'contato/index.html', ...expectedPages]
 const team = {
@@ -161,6 +170,14 @@ for (const relative of ['index.html', 'insights.html', ...expectedPages]) {
   check(!/href="(?:\.\.\/)*index\.html#contato"|href="#contato"/.test(html), `CTA antigo de contato em ${relative}`)
 }
 
+for (const [relative, canonical] of canonicalPages) {
+  const html = fs.readFileSync(path.join(root, relative), 'utf8')
+  const matches = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"/gi)]
+  check(matches.length === 1, `Canonical único ausente: ${relative}`)
+  check(matches[0]?.[1] === canonical, `Canonical incorreto em ${relative}: esperado ${canonical}`)
+  check(!/href="(?:\.\.\/)*index\.html(?:[?#][^"]*)?"/i.test(html), `Link interno aponta para index.html em ${relative}`)
+}
+
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8')
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
 check(sitemapUrls.includes(`${productionOrigin}/contato/`), 'Rota /contato/ ausente do sitemap')
@@ -173,6 +190,15 @@ if (fs.existsSync(robotsFilename)) {
   check(/User-agent:\s*\*/i.test(robots) && /Allow:\s*\//i.test(robots), 'Rastreamento geral não está liberado no robots.txt')
   check(/User-agent:\s*OAI-SearchBot[\s\S]*?Allow:\s*\//i.test(robots), 'OAI-SearchBot não está liberado no robots.txt')
   check(robots.includes(`Sitemap: ${productionOrigin}/sitemap.xml`), 'Sitemap oficial ausente do robots.txt')
+}
+
+const htaccessFilename = path.join(root, '.htaccess')
+check(fs.existsSync(htaccessFilename), '.htaccess de canonicalização ausente')
+if (fs.existsSync(htaccessFilename)) {
+  const htaccess = fs.readFileSync(htaccessFilename, 'utf8')
+  check(/RewriteCond\s+%\{THE_REQUEST\}[^\r\n]*index\\\.html/i.test(htaccess), 'Redirecionamento de index.html ausente')
+  check(/RewriteCond\s+%\{HTTP_HOST\}\s+!\^orizgroup\\\.com\\\.br\$/i.test(htaccess), 'Redirecionamento para domínio sem www ausente')
+  check(/RewriteRule[^\r\n]*https:\/\/orizgroup\.com\.br/i.test(htaccess), 'Destino canônico não configurado no .htaccess')
 }
 
 if (failures.length) {
