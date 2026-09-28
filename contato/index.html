@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conte à Oriz o que sua empresa precisa e continue a conversa com o especialista certo.">
+  <meta name="theme-color" content="#ff5a1f">
+  <title>Vamos conversar — Oriz Marketing</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff5a1f'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%23141414' stroke-width='10'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../styles.css?v=oriz-20260928-4">
+  <link rel="stylesheet" href="../menu.css?v=oriz-20260928-4">
+  <link rel="stylesheet" href="contato.css?v=oriz-20260928-4">
+  <script defer src="../menu.js?v=oriz-20260928-4"></script>
+  <script type="module" src="contato.mjs?v=oriz-20260928-4"></script>
+</head>
+<body class="contact-page">
+  <a class="skip" href="#main">Pular para o formulário</a>
+  <header class="header">
+    <a class="logo" href="../" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span class="menu-lines" aria-hidden="true"></span></button>
+  </header>
+
+  <dialog id="navigation" class="fullscreen-menu" aria-label="Menu principal">
+    <div class="menu-shell">
+      <div class="menu-links-panel">
+        <div class="menu-topline"><a class="logo" href="../" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a><span class="menu-caption">CONEXÕES QUE CONSTROEM.</span></div>
+        <nav aria-label="Navegação principal"><a href="../#oriz">Oriz</a><a href="../servicos/">Serviços</a><a href="../#metodo">Como trabalhamos</a><a href="../insights.html">Insights</a><a href="./" aria-current="page">Vamos conversar<span aria-hidden="true">↗</span></a></nav>
+        <div class="menu-bottomline">Estratégia, criatividade e performance.<br>Na mesma direção.</div>
+      </div>
+      <div class="menu-brand-panel"><canvas class="pixel-trail" aria-hidden="true"></canvas><div class="pixel-word" role="img" aria-label="ORIZ"></div><span class="menu-brand-note">IDEIAS EM MOVIMENTO.</span></div>
+      <button class="menu-close" aria-label="Fechar menu">Fechar <span aria-hidden="true">×</span></button>
+    </div>
+  </dialog>
+
+  <main id="main" class="contact-main">
+    <section class="contact-intro" aria-labelledby="contact-title">
+      <span class="section-label">O PRÓXIMO MOVIMENTO</span>
+      <h1 id="contact-title">Conte onde<br>sua marca quer<br><em>chegar.</em></h1>
+      <p>Escolha as frentes que fazem sentido agora. A conversa segue direto com quem pode orientar o próximo passo.</p>
+      <div class="contact-signal" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="form-panel" aria-label="Formulário de contato">
+      <form data-lead-form novalidate>
+        <div class="form-heading"><span class="section-label">SUA SOLICITAÇÃO</span><span class="form-step">DADOS → SERVIÇOS → WHATSAPP</span></div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="lead-name">Nome</label>
+            <input id="lead-name" name="name" type="text" autocomplete="name" minlength="2" maxlength="100" placeholder="Como podemos chamar você?" required>
+          </div>
+          <div class="field">
+            <label for="lead-whatsapp">WhatsApp</label>
+            <input id="lead-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" maxlength="19" placeholder="(00) 00000-0000" required>
+          </div>
+        </div>
+
+        <fieldset class="services-fieldset">
+          <legend>Quais serviços você deseja?</legend>
+          <p>Você pode selecionar mais de uma opção.</p>
+          <div class="service-options">
+            <label><input type="checkbox" name="services" value="criacao-de-sites"><span><small>DIGITAL</small>Criação de sites<i aria-hidden="true">+</i></span></label>
+            <label><input type="checkbox" name="services" value="seo"><span><small>DIGITAL</small>SEO<i aria-hidden="true">+</i></span></label>
+            <label><input type="checkbox" name="services" value="criacao-de-marca"><span><small>MARCA</small>Criação de marca<i aria-hidden="true">+</i></span></label>
+            <label><input type="checkbox" name="services" value="branding"><span><small>MARCA</small>Branding<i aria-hidden="true">+</i></span></label>
+            <label><input type="checkbox" name="services" value="trafego-pago"><span><small>PERFORMANCE</small>Tráfego pago<i aria-hidden="true">+</i></span></label>
+            <label><input type="checkbox" name="services" value="estrategia-de-marketing"><span><small>ESTRATÉGIA</small>Estratégia de marketing<i aria-hidden="true">+</i></span></label>
+          </div>
+        </fieldset>
+
+        <div class="honeypot" aria-hidden="true">
+          <label for="company-website">Site da empresa</label>
+          <input id="company-website" name="company_website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="form-action">
+          <p class="privacy-note">Seus dados serão usados pela Oriz para responder à sua solicitação. Ao continuar, abriremos uma conversa no WhatsApp com o especialista mais adequado.</p>
+          <button class="submit-button" type="submit"><span data-submit-label>Continuar no WhatsApp</span><span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="form-status" data-form-status aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="contact-footer">
+    <span>© 2026 Oriz Marketing</span>
+    <a href="../">Voltar ao início ↑</a>
+    <span>FEITO DE CONEXÕES.</span>
+  </footer>
+</body>
+</html>
