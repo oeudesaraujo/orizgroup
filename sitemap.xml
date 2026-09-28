@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Caminhos relativos: definir a origem oficial antes do envio a mecanismos de busca. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>/</loc></url>
-  <url><loc>/servicos/</loc></url>
-  <url><loc>/cidades/</loc></url>
-  <url><loc>/contato/</loc></url>
-  <url><loc>/servicos/trafego-pago/</loc></url>
-  <url><loc>/servicos/estrategia-de-marketing/</loc></url>
-  <url><loc>/servicos/criacao-de-sites/</loc></url>
-  <url><loc>/servicos/seo/</loc></url>
-  <url><loc>/servicos/criacao-de-marca/</loc></url>
-  <url><loc>/servicos/branding/</loc></url>
-  <url><loc>/cidades/itapipoca/</loc></url>
-  <url><loc>/cidades/fortaleza/</loc></url>
-  <url><loc>/cidades/trairi/</loc></url>
-  <url><loc>/cidades/amontada/</loc></url>
-  <url><loc>/cidades/itapaje/</loc></url>
-  <url><loc>/cidades/sobral/</loc></url>
+  <url><loc>https://orizgroup.com.br/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/</loc></url>
+  <url><loc>https://orizgroup.com.br/contato/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/trafego-pago/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/estrategia-de-marketing/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/criacao-de-sites/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/seo/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/criacao-de-marca/</loc></url>
+  <url><loc>https://orizgroup.com.br/servicos/branding/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/itapipoca/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/fortaleza/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/trairi/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/amontada/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/itapaje/</loc></url>
+  <url><loc>https://orizgroup.com.br/cidades/sobral/</loc></url>
 </urlset>

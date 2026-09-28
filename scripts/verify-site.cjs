@@ -11,6 +11,7 @@ const services = {
   branding: 'Eudes',
 }
 const cities = ['itapipoca', 'fortaleza', 'trairi', 'amontada', 'itapaje', 'sobral']
+const productionOrigin = 'https://orizgroup.com.br'
 const visualLabels = {
   'trafego-pago': 'Tráfego pago',
   'estrategia-de-marketing': 'Estratégia de marketing',
@@ -161,7 +162,9 @@ for (const relative of ['index.html', 'insights.html', ...expectedPages]) {
 }
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8')
-check(sitemap.includes('<loc>/contato/</loc>'), 'Rota /contato/ ausente do sitemap')
+const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
+check(sitemapUrls.includes(`${productionOrigin}/contato/`), 'Rota /contato/ ausente do sitemap')
+check(sitemapUrls.every((url) => url.startsWith(`${productionOrigin}/`)), 'Sitemap contém URLs fora do domínio oficial')
 
 if (failures.length) {
   console.error(`FALHOU — ${failures.length} problema(s)\n${failures.map((item) => `- ${item}`).join('\n')}`)

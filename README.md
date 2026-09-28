@@ -49,7 +49,6 @@ O domínio oficial `https://orizgroup.com.br` já está autorizado. Para publica
 
 ## Antes do lançamento comercial
 
-- Confirmar o domínio e trocar os caminhos relativos do sitemap por URLs absolutas.
 - Definir uma imagem Open Graph oficial.
 
 Não há cases, métricas, endereço físico, depoimentos ou certificações inventadas. A tipografia usa Google Fonts com alternativas locais; bibliotecas 3D estão incluídas em `vendor/` com suas licenças.
