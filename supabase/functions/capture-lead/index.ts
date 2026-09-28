@@ -15,7 +15,11 @@ function parseKeyMap(variable: string, legacyVariable: string): string[] {
 }
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL') || ''
-const publishableKeys = parseKeyMap('SUPABASE_PUBLISHABLE_KEYS', 'SUPABASE_ANON_KEY')
+const projectPublishableKey = 'sb_publishable_cu2QrGqC4au6ezzotBPSbw_daFPBN7e'
+const publishableKeys = [
+  projectPublishableKey,
+  ...parseKeyMap('SUPABASE_PUBLISHABLE_KEYS', 'SUPABASE_ANON_KEY'),
+]
 const secretKeys = parseKeyMap('SUPABASE_SECRET_KEYS', 'SUPABASE_SERVICE_ROLE_KEY')
 const configuredOrigins = (Deno.env.get('ORIZ_ALLOWED_ORIGINS') || '')
   .split(',')
