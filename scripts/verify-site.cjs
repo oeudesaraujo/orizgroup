@@ -31,8 +31,8 @@ const expectedPages = [
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
-const assetVersion = 'v=oriz-20260928-3'
-const assetPages = ['index.html', 'insights.html', ...expectedPages]
+const assetVersion = 'v=oriz-20260928-4'
+const assetPages = ['index.html', 'insights.html', 'contato/index.html', ...expectedPages]
 const team = {
   Eudes: {
     name: 'Eudes Araújo',
@@ -149,9 +149,23 @@ check(home.includes(`src="${team.Eudes.photo}"`) && home.includes(`src="${team.W
 check(home.includes('Graduando em Direito'), 'Formação em Direito de Wallyson ausente na Home')
 check(home.includes('mercado jurídico') && home.includes('contexto empresarial'), 'Foco jurídico e empresarial de Wallyson ausente na Home')
 
+const contactRelative = 'contato/index.html'
+const contactFilename = path.join(root, contactRelative)
+check(fs.existsSync(contactFilename), 'Página de contato ausente')
+
+for (const relative of ['index.html', 'insights.html', ...expectedPages]) {
+  const filename = path.join(root, relative)
+  if (!fs.existsSync(filename)) continue
+  const html = fs.readFileSync(filename, 'utf8')
+  check(!/href="(?:\.\.\/)*index\.html#contato"|href="#contato"/.test(html), `CTA antigo de contato em ${relative}`)
+}
+
+const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8')
+check(sitemap.includes('<loc>/contato/</loc>'), 'Rota /contato/ ausente do sitemap')
+
 if (failures.length) {
   console.error(`FALHOU — ${failures.length} problema(s)\n${failures.map((item) => `- ${item}`).join('\n')}`)
   process.exit(1)
 }
 
-console.log(`OK — ${expectedPages.length} páginas, responsáveis, metadados, schemas e links internos verificados.`)
+console.log(`OK — ${expectedPages.length + 1} páginas, responsáveis, metadados, schemas e links internos verificados.`)

@@ -17,7 +17,7 @@ services.forEach((service) => write(`servicos/${service.slug}/index.html`, rende
 cities.forEach((city) => write(`cidades/${city.slug}/index.html`, renderCity(city)))
 
 const routes = [
-  '/', '/servicos/', '/cidades/',
+  '/', '/servicos/', '/cidades/', '/contato/',
   ...services.map((service) => `/servicos/${service.slug}/`),
   ...cities.map((city) => `/cidades/${city.slug}/`),
 ]

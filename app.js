@@ -4,7 +4,6 @@ const serviceRoutes = { performance: 'servicos/trafego-pago/', digital: 'servico
 const dialog=document.querySelector('#detail-dialog');
 function openDialog(label,title,content){document.querySelector('#dialog-label').textContent=label;document.querySelector('#dialog-title').textContent=title;document.querySelector('#dialog-content').innerHTML=content;dialog.showModal();}
 document.querySelectorAll('[data-service]').forEach(button => button.addEventListener('click',()=>{location.href=serviceRoutes[button.dataset.service] || 'servicos/';}));
-document.querySelector('#contact-open')?.addEventListener('click',()=>openDialog('CONTATO / PRÉVIA V1','Uma conversa abre caminhos.','<p>Este espaço está pronto para receber o WhatsApp e o e-mail oficiais da Oriz.</p><p>Os canais de contato serão conectados após a revisão desta primeira versão.</p>'));
 document.querySelector('.dialog-close')?.addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
 document.querySelector('#year').textContent=new Date().getFullYear();
 // Scroll-linked choreography: one scheduled frame, only in-view surfaces.

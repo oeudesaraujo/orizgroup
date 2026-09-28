@@ -2,7 +2,7 @@ const { owners, services, cities } = require('./site-content.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260928-3'
+const assetVersion = '?v=oriz-20260928-4'
 
 function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
@@ -10,7 +10,7 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
     ['SERVIÇOS', `${base}servicos/`],
     ['COMO TRABALHAMOS', `${base}index.html#metodo`],
     ['INSIGHTS', `${base}insights.html`],
-    ['VAMOS CONVERSAR', `${base}index.html#contato`],
+    ['VAMOS CONVERSAR', `${base}contato/`],
   ]
   return `<!doctype html>
 <html lang="pt-BR">
@@ -59,7 +59,7 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
   <footer class="section footer detail-footer">
     <div class="footer-top"><p>Estratégia, criatividade e performance.<br>Na mesma direção.</p><a href="#main" class="back-top">VOLTAR AO TOPO ↑</a></div>
     <a class="footer-logo" href="${base}index.html" aria-label="Oriz, início">oriz<span>®</span></a>
-    <div class="footer-bottom"><span>© <span id="year">2026</span> Oriz Marketing</span><div><a href="${base}servicos/">Serviços</a><a href="${base}cidades/">Cidades</a><a href="${base}insights.html">Insights</a><a href="${base}index.html#contato">Contato</a></div><span>FEITO DE CONEXÕES.</span></div>
+    <div class="footer-bottom"><span>© <span id="year">2026</span> Oriz Marketing</span><div><a href="${base}servicos/">Serviços</a><a href="${base}cidades/">Cidades</a><a href="${base}insights.html">Insights</a><a href="${base}contato/">Contato</a></div><span>FEITO DE CONEXÕES.</span></div>
   </footer>
 </body>
 </html>`
@@ -82,7 +82,7 @@ function renderService(service) {
   const owner = owners[service.owner]
   const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
   const content = `<section class="detail-hero detail-section">
-      <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}index.html#contato">Começar uma conversa <span>↗</span></a></div>
+      <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}contato/">Começar uma conversa <span>↗</span></a></div>
       <div class="detail-hero-side">${visual(service.slug)}<p>LIDERADO POR <strong>${owner.name}</strong><br>${owner.role}</p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">QUANDO FAZ SENTIDO</span><h2>${esc(service.context)}</h2></section>
@@ -106,7 +106,7 @@ function renderCity(city) {
   const base = '../../'
   const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
   const content = `<section class="detail-hero city-hero detail-section">
-      <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}index.html#contato">Conversar sobre o negócio <span>↗</span></a></div>
+      <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}contato/">Conversar sobre o negócio <span>↗</span></a></div>
       <div class="detail-hero-side">${visual('city')}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">ENTENDER ANTES DE AGIR</span><h2>${esc(city.context)}</h2></section>
@@ -126,7 +126,7 @@ function renderCity(city) {
 }
 
 function cta(base, title) {
-  return `<section class="detail-section detail-cta"><span class="detail-kicker">O PRÓXIMO MOVIMENTO</span><h2>${esc(title)}</h2><a class="button dark" href="${base}index.html#contato">Conversar com a Oriz <span>↗</span></a></section>`
+  return `<section class="detail-section detail-cta"><span class="detail-kicker">O PRÓXIMO MOVIMENTO</span><h2>${esc(title)}</h2><a class="button dark" href="${base}contato/">Conversar com a Oriz <span>↗</span></a></section>`
 }
 
 function renderIndex(type) {
