@@ -166,6 +166,15 @@ const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) =>
 check(sitemapUrls.includes(`${productionOrigin}/contato/`), 'Rota /contato/ ausente do sitemap')
 check(sitemapUrls.every((url) => url.startsWith(`${productionOrigin}/`)), 'Sitemap contém URLs fora do domínio oficial')
 
+const robotsFilename = path.join(root, 'robots.txt')
+check(fs.existsSync(robotsFilename), 'robots.txt ausente')
+if (fs.existsSync(robotsFilename)) {
+  const robots = fs.readFileSync(robotsFilename, 'utf8')
+  check(/User-agent:\s*\*/i.test(robots) && /Allow:\s*\//i.test(robots), 'Rastreamento geral não está liberado no robots.txt')
+  check(/User-agent:\s*OAI-SearchBot[\s\S]*?Allow:\s*\//i.test(robots), 'OAI-SearchBot não está liberado no robots.txt')
+  check(robots.includes(`Sitemap: ${productionOrigin}/sitemap.xml`), 'Sitemap oficial ausente do robots.txt')
+}
+
 if (failures.length) {
   console.error(`FALHOU — ${failures.length} problema(s)\n${failures.map((item) => `- ${item}`).join('\n')}`)
   process.exit(1)
