@@ -11,13 +11,27 @@ const services = {
   branding: 'Eudes',
 }
 const cities = ['itapipoca', 'fortaleza', 'trairi', 'amontada', 'itapaje', 'sobral']
+const visualLabels = {
+  'trafego-pago': 'Tráfego pago',
+  'estrategia-de-marketing': 'Estratégia de marketing',
+  'criacao-de-sites': 'Criação de sites',
+  seo: 'SEO',
+  'criacao-de-marca': 'Criação de marca',
+  branding: 'Branding',
+  itapipoca: 'Itapipoca',
+  fortaleza: 'Fortaleza',
+  trairi: 'Trairi',
+  amontada: 'Amontada',
+  itapaje: 'Itapajé',
+  sobral: 'Sobral',
+}
 const expectedPages = [
   'servicos/index.html',
   'cidades/index.html',
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
-const assetVersion = 'v=oriz-20260928-2'
+const assetVersion = 'v=oriz-20260928-3'
 const assetPages = ['index.html', 'insights.html', ...expectedPages]
 const team = {
   Eudes: {
@@ -98,6 +112,9 @@ for (const [slug, owner] of Object.entries(services)) {
   const html = fs.readFileSync(filename, 'utf8')
   check(html.includes(`data-owner="${team[owner].name}"`), `Responsável incorreto em ${relative}: esperado ${team[owner].name}`)
   check(html.includes(`src="../../${team[owner].photo}"`), `Foto do responsável ausente em ${relative}`)
+  check(html.includes(`data-visual="${slug}"`), `Identidade visual ausente em ${relative}`)
+  check(html.includes('glass-layer--front') && html.includes('visual-scan'), `Sistema glassmorphism incompleto em ${relative}`)
+  check(!html.includes(`<span>${visualLabels[slug]}</span>`), `Nome duplicado dentro da ilustração em ${relative}`)
   check(html.includes('"@type":"Service"'), `Schema Service ausente: ${relative}`)
 }
 
@@ -108,6 +125,9 @@ for (const slug of cities) {
   const html = fs.readFileSync(filename, 'utf8')
   check(html.includes('data-owner="Eudes Araújo"') && html.includes('data-owner="Wallyson Dias"'), `Equipe incompleta: ${relative}`)
   check(html.includes(`src="../../${team.Eudes.photo}"`) && html.includes(`src="../../${team.Wallyson.photo}"`), `Fotos da equipe ausentes: ${relative}`)
+  check(html.includes('data-visual="city"'), `Identidade visual de cidade ausente em ${relative}`)
+  check(html.includes('glass-layer--front') && html.includes('visual-scan'), `Sistema glassmorphism incompleto em ${relative}`)
+  check(!html.includes(`<span>${visualLabels[slug]}</span>`), `Nome duplicado dentro da ilustração em ${relative}`)
   check(html.includes('"@type":"ProfessionalService"'), `Schema ProfessionalService ausente: ${relative}`)
 }
 

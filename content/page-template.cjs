@@ -2,7 +2,7 @@ const { owners, services, cities } = require('./site-content.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260928-2'
+const assetVersion = '?v=oriz-20260928-3'
 
 function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
@@ -73,8 +73,8 @@ function ownerCard(name, base, compact = false) {
   </article>`
 }
 
-function visual(kind, label) {
-  return `<div class="detail-visual detail-visual--${kind}" aria-hidden="true"><div class="visual-grid"></div><div class="visual-orbit"></div><span>${esc(label)}</span><i></i><i></i><i></i></div>`
+function visual(kind) {
+  return `<div class="detail-visual detail-visual--${kind}" data-visual="${kind}" aria-hidden="true"><div class="visual-ambient"></div><div class="visual-grid"></div><div class="glass-layer glass-layer--back"></div><div class="glass-layer glass-layer--mid"></div><div class="glass-layer glass-layer--front"></div><div class="visual-orbit"></div><i class="visual-node"></i><i class="visual-node"></i><i class="visual-node"></i><b class="visual-scan"></b></div>`
 }
 
 function renderService(service) {
@@ -83,7 +83,7 @@ function renderService(service) {
   const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
   const content = `<section class="detail-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}index.html#contato">Começar uma conversa <span>↗</span></a></div>
-      <div class="detail-hero-side">${visual(service.slug, service.name)}<p>LIDERADO POR <strong>${owner.name}</strong><br>${owner.role}</p></div>
+      <div class="detail-hero-side">${visual(service.slug)}<p>LIDERADO POR <strong>${owner.name}</strong><br>${owner.role}</p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">QUANDO FAZ SENTIDO</span><h2>${esc(service.context)}</h2></section>
     <section class="detail-section modules-section"><div class="section-heading"><span class="detail-kicker">O QUE CONSTRUÍMOS</span><h2>Entregas conectadas,<br><em>não peças soltas.</em></h2></div><div class="deliverable-grid">${service.deliverables.map((item, index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h3>${esc(item)}</h3></article>`).join('')}</div></section>
@@ -107,7 +107,7 @@ function renderCity(city) {
   const breadcrumb = `<a href="${base}index.html">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
   const content = `<section class="detail-hero city-hero detail-section">
       <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}index.html#contato">Conversar sobre o negócio <span>↗</span></a></div>
-      <div class="detail-hero-side">${visual('city', city.name)}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
+      <div class="detail-hero-side">${visual('city')}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">ENTENDER ANTES DE AGIR</span><h2>${esc(city.context)}</h2></section>
     <section class="detail-section city-services"><div class="section-heading"><span class="detail-kicker">CAPACIDADES CONECTADAS</span><h2>Seis frentes.<br><em>Uma mesma direção.</em></h2></div><div class="service-card-grid">${services.map((service) => `<a href="${base}servicos/${service.slug}/"><span>${service.eyebrow}</span><h3>${service.name}</h3><p>${service.promise}</p><b>${owners[service.owner].name} ↗</b></a>`).join('')}</div></section>
