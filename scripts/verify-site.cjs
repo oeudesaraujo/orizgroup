@@ -17,6 +17,8 @@ const expectedPages = [
   ...Object.keys(services).map((slug) => `servicos/${slug}/index.html`),
   ...cities.map((slug) => `cidades/${slug}/index.html`),
 ]
+const assetVersion = 'v=oriz-20260927-1'
+const assetPages = ['index.html', 'insights.html', ...expectedPages]
 
 const failures = []
 const titles = new Map()
@@ -29,6 +31,15 @@ function check(condition, message) {
 
 function capture(html, pattern) {
   return html.match(pattern)?.[1]?.replace(/<[^>]+>/g, '').trim() || ''
+}
+
+for (const relative of assetPages) {
+  const filename = path.join(root, relative)
+  if (!fs.existsSync(filename)) continue
+  const html = fs.readFileSync(filename, 'utf8')
+  const localAssets = [...html.matchAll(/(?:href|src)="([^"?#]+\.(?:css|js)(?:\?[^"#]*)?)"/gi)].map((match) => match[1])
+  check(localAssets.length > 0, `Nenhum asset local encontrado: ${relative}`)
+  localAssets.forEach((asset) => check(asset.includes(assetVersion), `Asset sem versão anticache em ${relative}: ${asset}`))
 }
 
 for (const relative of expectedPages) {

@@ -2,6 +2,7 @@ const { owners, services, cities } = require('./site-content.cjs')
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
+const assetVersion = '?v=oriz-20260927-1'
 
 function shell({ title, description, base, bodyClass, breadcrumb, content, schema }) {
   const nav = [
@@ -25,14 +26,14 @@ function shell({ title, description, base, bodyClass, breadcrumb, content, schem
   <meta property="og:description" content="${esc(description)}">
   <title>${esc(title)}</title>
   <link rel="icon" href="${base}icone-oriz.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="${base}styles.css">
-  <link rel="stylesheet" href="${base}menu.css">
-  <link rel="stylesheet" href="${base}footer-motion.css">
-  <link rel="stylesheet" href="${base}detail-pages.css">
+  <link rel="stylesheet" href="${base}styles.css${assetVersion}">
+  <link rel="stylesheet" href="${base}menu.css${assetVersion}">
+  <link rel="stylesheet" href="${base}footer-motion.css${assetVersion}">
+  <link rel="stylesheet" href="${base}detail-pages.css${assetVersion}">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
-  <script defer src="${base}menu.js"></script>
-  <script defer src="${base}footer-motion.js"></script>
-  <script defer src="${base}detail-pages.js"></script>
+  <script defer src="${base}menu.js${assetVersion}"></script>
+  <script defer src="${base}footer-motion.js${assetVersion}"></script>
+  <script defer src="${base}detail-pages.js${assetVersion}"></script>
 </head>
 <body class="detail-page ${bodyClass}">
   <a class="skip" href="#main">Pular para o conteúdo</a>
