@@ -36,6 +36,7 @@ const supabaseAdmin = createClient(supabaseUrl, secretKeys[0], {
 
 const handler = createCaptureHandler({
   allowedOrigins: [
+    'https://orizgroup.com.br',
     ...configuredOrigins,
     'http://127.0.0.1:4175',
     'http://localhost:4175',

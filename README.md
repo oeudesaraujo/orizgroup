@@ -38,9 +38,9 @@ O projeto Supabase de produção é `oriz-group`. A função pública se chama `
 
 Os leads podem ser acompanhados no Table Editor do Supabase. O campo `status` aceita `Novo`, `Em atendimento`, `Atendido` e `Não convertido`. A atribuição é automática: solicitações de Digital e Marca vão para Eudes, solicitações de Performance e Estratégia vão para Wallyson e combinações das duas áreas ficam como `Ambos`.
 
-`/contato/config.mjs` contém apenas a URL pública da função e a chave publicável. Chaves `service_role` ou `sb_secret_` nunca devem ser adicionadas ao navegador ou ao repositório. A função usa o segredo disponibilizado pelo próprio ambiente Supabase.
+`/contato/config.js` contém apenas a URL pública da função e a chave publicável. Chaves `service_role` ou `sb_secret_` nunca devem ser adicionadas ao navegador ou ao repositório. A função usa o segredo disponibilizado pelo próprio ambiente Supabase.
 
-Antes de publicar em um novo domínio, inclua a origem HTTPS exata em `ORIZ_ALLOWED_ORIGINS` e publique uma nova versão da função. Origens não autorizadas recebem bloqueio antes de qualquer gravação.
+O domínio oficial `https://orizgroup.com.br` já está autorizado. Para publicar em outro domínio, inclua a nova origem HTTPS exata em `ORIZ_ALLOWED_ORIGINS` e publique uma nova versão da função. Origens não autorizadas recebem bloqueio antes de qualquer gravação.
 
 ## Responsáveis
 
@@ -50,7 +50,6 @@ Antes de publicar em um novo domínio, inclua a origem HTTPS exata em `ORIZ_ALLO
 ## Antes do lançamento comercial
 
 - Confirmar o domínio e trocar os caminhos relativos do sitemap por URLs absolutas.
-- Configurar o domínio em `ORIZ_ALLOWED_ORIGINS` na função `capture-lead`.
 - Definir uma imagem Open Graph oficial.
 
 Não há cases, métricas, endereço físico, depoimentos ou certificações inventadas. A tipografia usa Google Fonts com alternativas locais; bibliotecas 3D estão incluídas em `vendor/` com suas licenças.

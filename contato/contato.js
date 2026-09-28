@@ -1,4 +1,4 @@
-import { SUPABASE_FUNCTION_URL, SUPABASE_PUBLISHABLE_KEY } from './config.mjs'
+import { SUPABASE_FUNCTION_URL, SUPABASE_PUBLISHABLE_KEY } from './config.js'
 
 export function formatBrazilianPhone(value) {
   const digits = String(value ?? '').replace(/\D/g, '').slice(0, 13)

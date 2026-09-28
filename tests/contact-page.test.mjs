@@ -8,8 +8,8 @@ import {
   createLeadPayload,
   createSubmitController,
   formatBrazilianPhone,
-} from '../contato/contato.mjs'
-import { SUPABASE_FUNCTION_URL, SUPABASE_PUBLISHABLE_KEY } from '../contato/config.mjs'
+} from '../contato/contato.js'
+import { SUPABASE_FUNCTION_URL, SUPABASE_PUBLISHABLE_KEY } from '../contato/config.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -21,6 +21,7 @@ test('contact page exposes the complete accessible lead form', () => {
   assert.match(html, /<label[^>]+for="lead-whatsapp"/)
   assert.match(html, /<input[^>]+id="lead-whatsapp"[^>]+required/)
   assert.match(html, /aria-live="polite"/)
+  assert.match(html, /<script type="module" src="contato\.js\?[^"\s]+"><\/script>/)
   assert.match(html, /name="company_website"[^>]+tabindex="-1"[^>]+autocomplete="off"/)
 
   const serviceValues = [...html.matchAll(/name="services"\s+value="([^"]+)"/g)].map((match) => match[1])
