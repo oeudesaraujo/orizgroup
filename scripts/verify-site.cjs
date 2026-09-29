@@ -48,7 +48,7 @@ const personIds = {
   Eudes: `${productionOrigin}/#eudes-araujo`,
   Wallyson: `${productionOrigin}/#wallyson-dias`,
 }
-const assetVersion = 'v=oriz-20260928-5'
+const assetVersion = 'v=oriz-20260929-6'
 const assetPages = ['index.html', 'insights.html', 'contato/index.html', ...expectedPages]
 const team = {
   Eudes: {

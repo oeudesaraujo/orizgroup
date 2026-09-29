@@ -6,7 +6,7 @@ const {
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260928-5'
+const assetVersion = '?v=oriz-20260929-6'
 const productionOrigin = 'https://orizgroup.com.br'
 
 function shell({ title, description, canonicalPath, base, bodyClass, breadcrumb, content, schema }) {
