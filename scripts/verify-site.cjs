@@ -1,5 +1,6 @@
 const fs = require('node:fs')
 const path = require('node:path')
+const { owners: contentOwners } = require('../content/site-content.cjs')
 
 const root = path.resolve(__dirname, '..')
 const services = {
@@ -47,7 +48,7 @@ const personIds = {
   Eudes: `${productionOrigin}/#eudes-araujo`,
   Wallyson: `${productionOrigin}/#wallyson-dias`,
 }
-const assetVersion = 'v=oriz-20260928-4'
+const assetVersion = 'v=oriz-20260928-5'
 const assetPages = ['index.html', 'insights.html', 'contato/index.html', ...expectedPages]
 const team = {
   Eudes: {
@@ -99,7 +100,18 @@ for (const relative of assetPages) {
   const localAssets = [...html.matchAll(/(?:href|src)="([^"?#]+\.(?:css|js)(?:\?[^"#]*)?)"/gi)].map((match) => match[1])
   check(localAssets.length > 0, `Nenhum asset local encontrado: ${relative}`)
   localAssets.forEach((asset) => check(asset.includes(assetVersion), `Asset sem versão anticache em ${relative}: ${asset}`))
+  check(!/[↗→↑↓↺](?!\uFE0E)/u.test(html), `Símbolo pode virar emoji no iOS: ${relative}`)
 }
+
+const detailPagesScript = fs.readFileSync(path.join(root, 'detail-pages.js'), 'utf8')
+check(detailPagesScript.includes("'IntersectionObserver' in window"), 'Animações de entrada precisam de fallback sem IntersectionObserver')
+check(detailPagesScript.includes("element.classList.add('is-visible')"), 'Animações de entrada precisam liberar o conteúdo mesmo sem evento de scroll')
+const sharedStyles = fs.readFileSync(path.join(root, 'styles.css'), 'utf8')
+const menuStyles = fs.readFileSync(path.join(root, 'menu.css'), 'utf8')
+const detailStyles = fs.readFileSync(path.join(root, 'detail-pages.css'), 'utf8')
+check(sharedStyles.includes('-webkit-text-size-adjust:100%'), 'Proteção contra ampliação automática de texto no iOS ausente')
+check(menuStyles.includes('height:100vh;height:100dvh'), 'Menu precisa de fallback de altura para versões antigas do iOS')
+check(detailStyles.includes('-webkit-mask-image:'), 'Ilustrações precisam do prefixo de máscara do Safari')
 
 for (const relative of expectedPages) {
   const filename = path.join(root, relative)
@@ -210,6 +222,9 @@ for (const [relative, canonical] of canonicalPages) {
   check(page?.url === canonical, `URL da entidade principal incorreta: ${relative}`)
   check(page?.isPartOf?.['@id'] === websiteId, `Relação com WebSite ausente: ${relative}`)
   check(page?.publisher?.['@id'] === organizationId, `Relação com a Oriz ausente: ${relative}`)
+  const organization = graphNode(schema, 'Organization')
+  check(Boolean(organization?.description), `Descrição central da Oriz ausente: ${relative}`)
+  check(organization?.employee?.length === 2, `Equipe central da Oriz incompleta: ${relative}`)
 }
 
 const homeSchema = parseJsonLd(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), 'index.html')
@@ -219,6 +234,7 @@ for (const [key, person] of Object.entries(team)) {
   const node = homeSchema?.['@graph']?.find((item) => item['@id'] === personIds[key])
   check(node?.['@type'] === 'Person' && node.name === person.name, `Pessoa não conectada à Oriz: ${person.name}`)
   check(node?.worksFor?.['@id'] === organizationId, `Vínculo profissional ausente: ${person.name}`)
+  check(node?.description === contentOwners[key].bio, `Biografia do schema divergente: ${person.name}`)
 }
 
 for (const [slug, owner] of Object.entries(services)) {

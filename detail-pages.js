@@ -1,18 +1,26 @@
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-  document.querySelectorAll('.detail-section > *, .directory-grid > a').forEach((element) => element.classList.add('is-reveal'))
+  const revealTargets = [...document.querySelectorAll('.detail-section > *, .directory-grid > a')]
 
-  if (reduced.matches) {
-    document.querySelectorAll('.is-reveal').forEach((element) => element.classList.add('is-visible'))
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return
-        entry.target.classList.add('is-visible')
-        observer.unobserve(entry.target)
+  if (!reduced.matches && 'IntersectionObserver' in window) {
+    try {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        })
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+      revealTargets.forEach((element) => {
+        element.classList.add('is-reveal')
+        observer.observe(element)
       })
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
-    document.querySelectorAll('.is-reveal').forEach((element) => observer.observe(element))
+      setTimeout(() => {
+        revealTargets.forEach((element) => element.classList.add('is-visible'))
+      }, 2400)
+    } catch {
+      revealTargets.forEach((element) => element.classList.remove('is-reveal'))
+    }
   }
 
   const visuals = [...document.querySelectorAll('.detail-visual')]

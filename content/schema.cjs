@@ -112,6 +112,16 @@ function graph(...nodes) {
   return { '@context': 'https://schema.org', '@graph': nodes.flat().filter(Boolean) }
 }
 
+function staticPageSchema({ type = 'WebPage', url, name, description, mainEntityId }) {
+  return graph(
+    organizationSchema(),
+    websiteSchema(),
+    personSchema('Eudes'),
+    personSchema('Wallyson'),
+    webpageSchema({ type, url, name, description, mainEntityId }),
+  )
+}
+
 module.exports = {
   origin,
   ids,
@@ -124,4 +134,5 @@ module.exports = {
   breadcrumbSchema,
   faqSchema,
   itemListSchema,
+  staticPageSchema,
 }

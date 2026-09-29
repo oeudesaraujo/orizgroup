@@ -6,7 +6,7 @@ const {
 
 const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const serviceBySlug = Object.fromEntries(services.map((item) => [item.slug, item]))
-const assetVersion = '?v=oriz-20260928-4'
+const assetVersion = '?v=oriz-20260928-5'
 const productionOrigin = 'https://orizgroup.com.br'
 
 function shell({ title, description, canonicalPath, base, bodyClass, breadcrumb, content, schema }) {
@@ -51,7 +51,7 @@ function shell({ title, description, canonicalPath, base, bodyClass, breadcrumb,
     <div class="menu-shell">
       <div class="menu-links-panel">
         <div class="menu-topline"><a class="logo" href="${base}" aria-label="Oriz, início">oriz<span>®</span><small>MARKETING</small></a><span class="menu-caption">CONEXÕES QUE CONSTROEM.</span></div>
-        <nav aria-label="Navegação principal">${nav.map(([label, href], index) => `<a href="${href}">${label}${index === nav.length - 1 ? '<span aria-hidden="true">↗</span>' : ''}</a>`).join('')}</nav>
+        <nav aria-label="Navegação principal">${nav.map(([label, href], index) => `<a href="${href}">${label}${index === nav.length - 1 ? '<span aria-hidden="true">&#x2197;&#xfe0e;</span>' : ''}</a>`).join('')}</nav>
         <div class="menu-bottomline">Estratégia, criatividade e performance.<br>Na mesma direção.</div>
       </div>
       <div class="menu-brand-panel"><canvas class="pixel-trail" aria-hidden="true"></canvas><div class="pixel-word" role="img" aria-label="ORIZ"></div><span class="menu-brand-note">IDEIAS EM MOVIMENTO.</span></div>
@@ -63,7 +63,7 @@ function shell({ title, description, canonicalPath, base, bodyClass, breadcrumb,
     ${content}
   </main>
   <footer class="section footer detail-footer">
-    <div class="footer-top"><p>Estratégia, criatividade e performance.<br>Na mesma direção.</p><a href="#main" class="back-top">VOLTAR AO TOPO ↑</a></div>
+    <div class="footer-top"><p>Estratégia, criatividade e performance.<br>Na mesma direção.</p><a href="#main" class="back-top">VOLTAR AO TOPO &#x2191;&#xfe0e;</a></div>
     <a class="footer-logo" href="${base}" aria-label="Oriz, início">oriz<span>®</span></a>
     <div class="footer-bottom"><span>© <span id="year">2026</span> Oriz Marketing</span><div><a href="${base}servicos/">Serviços</a><a href="${base}cidades/">Cidades</a><a href="${base}insights.html">Insights</a><a href="${base}contato/">Contato</a></div><span>FEITO DE CONEXÕES.</span></div>
   </footer>
@@ -91,18 +91,18 @@ function renderService(service) {
   const description = `${service.promise} Conheça a abordagem da Oriz para ${service.name.toLowerCase()}, as entregas, o processo e quem conduz o trabalho.`
   const breadcrumbId = `${url}#breadcrumb`
   const serviceId = `${url}#service`
-  const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}servicos/">Serviços</a><span>→</span><strong>${esc(service.name)}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>&#x2192;&#xfe0e;</span><a href="${base}servicos/">Serviços</a><span>&#x2192;&#xfe0e;</span><strong>${esc(service.name)}</strong>`
   const content = `<section class="detail-hero detail-section">
-      <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}contato/">Começar uma conversa <span>↗</span></a></div>
+      <div class="detail-hero-copy"><span class="detail-kicker">${service.eyebrow}</span><h1>${esc(service.name)}<br><em>com direção.</em></h1><p>${esc(service.promise)}</p><a class="button dark" href="${base}contato/">Começar uma conversa <span>&#x2197;&#xfe0e;</span></a></div>
       <div class="detail-hero-side">${visual(service.slug)}<p>LIDERADO POR <strong>${owner.name}</strong><br>${owner.role}</p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">QUANDO FAZ SENTIDO</span><h2>${esc(service.context)}</h2></section>
     <section class="detail-section modules-section"><div class="section-heading"><span class="detail-kicker">O QUE CONSTRUÍMOS</span><h2>Entregas conectadas,<br><em>não peças soltas.</em></h2></div><div class="deliverable-grid">${service.deliverables.map((item, index) => `<article><span>${String(index + 1).padStart(2, '0')}</span><h3>${esc(item)}</h3></article>`).join('')}</div></section>
-    <section class="detail-section process-section"><div class="section-heading"><span class="detail-kicker">COMO ACONTECE</span><h2>Um processo que<br><em>deixa rastros claros.</em></h2></div><div class="process-list">${service.process.map(([name, copy]) => `<article><h3>${esc(name)}</h3><p>${esc(copy)}</p><span>↗</span></article>`).join('')}</div></section>
+    <section class="detail-section process-section"><div class="section-heading"><span class="detail-kicker">COMO ACONTECE</span><h2>Um processo que<br><em>deixa rastros claros.</em></h2></div><div class="process-list">${service.process.map(([name, copy]) => `<article><h3>${esc(name)}</h3><p>${esc(copy)}</p><span>&#x2197;&#xfe0e;</span></article>`).join('')}</div></section>
     <section class="detail-section owner-section">${ownerCard(service.owner, base)}</section>
-    <section class="detail-section link-section"><div class="section-heading"><span class="detail-kicker">ONDE ATENDEMOS</span><h2>Estratégia próxima<br><em>do contexto.</em></h2></div><div class="text-link-grid">${cities.map((city) => `<a href="${base}cidades/${city.slug}/">${city.name}<span>↗</span></a>`).join('')}</div></section>
+    <section class="detail-section link-section"><div class="section-heading"><span class="detail-kicker">ONDE ATENDEMOS</span><h2>Estratégia próxima<br><em>do contexto.</em></h2></div><div class="text-link-grid">${cities.map((city) => `<a href="${base}cidades/${city.slug}/">${city.name}<span>&#x2197;&#xfe0e;</span></a>`).join('')}</div></section>
     <section class="detail-section faq-section"><div class="section-heading"><span class="detail-kicker">PERGUNTAS FREQUENTES</span><h2>Antes do próximo<br><em>movimento.</em></h2></div><div class="faq-list">${service.faqs.map(([question, answer]) => `<details><summary>${esc(question)}<span>+</span></summary><p>${esc(answer)}</p></details>`).join('')}</div></section>
-    <section class="detail-section related-section"><span class="detail-kicker">SERVIÇOS RELACIONADOS</span><div class="related-grid">${service.related.map((slug) => { const item = serviceBySlug[slug]; return `<a href="${base}servicos/${item.slug}/"><span>${item.eyebrow}</span><h3>${item.name}</h3><b>↗</b></a>` }).join('')}</div></section>
+    <section class="detail-section related-section"><span class="detail-kicker">SERVIÇOS RELACIONADOS</span><div class="related-grid">${service.related.map((slug) => { const item = serviceBySlug[slug]; return `<a href="${base}servicos/${item.slug}/"><span>${item.eyebrow}</span><h3>${item.name}</h3><b>&#x2197;&#xfe0e;</b></a>` }).join('')}</div></section>
     ${cta(base, `Vamos colocar ${service.name.toLowerCase()} em movimento?`)}
 `
   return shell({
@@ -142,17 +142,17 @@ function renderCity(city) {
   const description = `${city.promise} Conheça os serviços de estratégia, tráfego, sites, SEO e marca da Oriz para empresas em ${city.name}.`
   const breadcrumbId = `${url}#breadcrumb`
   const regionalServiceId = `${url}#service`
-  const breadcrumb = `<a href="${base}">Início</a><span>→</span><a href="${base}cidades/">Cidades</a><span>→</span><strong>${esc(city.name)}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>&#x2192;&#xfe0e;</span><a href="${base}cidades/">Cidades</a><span>&#x2192;&#xfe0e;</span><strong>${esc(city.name)}</strong>`
   const content = `<section class="detail-hero city-hero detail-section">
-      <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}contato/">Conversar sobre o negócio <span>↗</span></a></div>
+      <div class="detail-hero-copy"><span class="detail-kicker">${city.eyebrow}</span><h1>Marketing digital<br>em <em>${esc(city.name)}.</em></h1><p>${esc(city.promise)}</p><a class="button dark" href="${base}contato/">Conversar sobre o negócio <span>&#x2197;&#xfe0e;</span></a></div>
       <div class="detail-hero-side">${visual('city')}<p>CEARÁ · BRASIL<br><strong>${esc(city.focus)}</strong></p></div>
     </section>
     <section class="detail-section statement-section"><span class="detail-kicker">ENTENDER ANTES DE AGIR</span><h2>${esc(city.context)}</h2></section>
-    <section class="detail-section city-services"><div class="section-heading"><span class="detail-kicker">CAPACIDADES CONECTADAS</span><h2>Seis frentes.<br><em>Uma mesma direção.</em></h2></div><div class="service-card-grid">${services.map((service) => `<a href="${base}servicos/${service.slug}/"><span>${service.eyebrow}</span><h3>${service.name}</h3><p>${service.promise}</p><b>${owners[service.owner].name} ↗</b></a>`).join('')}</div></section>
+    <section class="detail-section city-services"><div class="section-heading"><span class="detail-kicker">CAPACIDADES CONECTADAS</span><h2>Seis frentes.<br><em>Uma mesma direção.</em></h2></div><div class="service-card-grid">${services.map((service) => `<a href="${base}servicos/${service.slug}/"><span>${service.eyebrow}</span><h3>${service.name}</h3><p>${service.promise}</p><b>${owners[service.owner].name} &#x2197;&#xfe0e;</b></a>`).join('')}</div></section>
     <section class="detail-section regional-section"><div><span class="detail-kicker">COMO TRABALHAMOS</span><h2>Proximidade não depende<br><em>de estar na mesma sala.</em></h2></div><div><p>O processo combina conversas objetivas, apresentação de decisões e ciclos claros de validação. Quando um encontro presencial agrega ao projeto, ele pode ser alinhado conforme contexto e disponibilidade.</p><ul><li>Diagnóstico com contexto local</li><li>Rotina remota organizada</li><li>Decisões registradas</li><li>Entregas conectadas ao objetivo</li></ul></div></section>
     <section class="detail-section team-section"><div class="section-heading"><span class="detail-kicker">QUEM FAZ ACONTECER</span><h2>Duas especialidades.<br><em>Uma direção.</em></h2></div><div class="team-grid">${ownerCard('Wallyson', base, true)}${ownerCard('Eudes', base, true)}</div></section>
     <section class="detail-section faq-section"><div class="section-heading"><span class="detail-kicker">PERGUNTAS FREQUENTES</span><h2>Atendimento em<br><em>${esc(city.name)}.</em></h2></div><div class="faq-list">${city.faqs.map(([question, answer]) => `<details><summary>${esc(question)}<span>+</span></summary><p>${esc(answer)}</p></details>`).join('')}</div></section>
-    <section class="detail-section link-section"><div class="section-heading"><span class="detail-kicker">OUTROS CONTEXTOS</span><h2>Conexões pela<br><em>região.</em></h2></div><div class="text-link-grid">${cities.filter((item) => item.slug !== city.slug).map((item) => `<a href="${base}cidades/${item.slug}/">${item.name}<span>↗</span></a>`).join('')}</div></section>
+    <section class="detail-section link-section"><div class="section-heading"><span class="detail-kicker">OUTROS CONTEXTOS</span><h2>Conexões pela<br><em>região.</em></h2></div><div class="text-link-grid">${cities.filter((item) => item.slug !== city.slug).map((item) => `<a href="${base}cidades/${item.slug}/">${item.name}<span>&#x2197;&#xfe0e;</span></a>`).join('')}</div></section>
     ${cta(base, `Vamos construir a próxima fase da sua marca em ${city.name}?`)}
 `
   return shell({
@@ -202,7 +202,7 @@ function renderCity(city) {
 }
 
 function cta(base, title) {
-  return `<section class="detail-section detail-cta"><span class="detail-kicker">O PRÓXIMO MOVIMENTO</span><h2>${esc(title)}</h2><a class="button dark" href="${base}contato/">Conversar com a Oriz <span>↗</span></a></section>`
+  return `<section class="detail-section detail-cta"><span class="detail-kicker">O PRÓXIMO MOVIMENTO</span><h2>${esc(title)}</h2><a class="button dark" href="${base}contato/">Conversar com a Oriz <span>&#x2197;&#xfe0e;</span></a></section>`
 }
 
 function renderIndex(type) {
@@ -216,13 +216,13 @@ function renderIndex(type) {
   const h1 = isServices ? 'Serviços que<br><em>trabalham juntos.</em>' : 'Estratégia próxima<br><em>de cada contexto.</em>'
   const intro = isServices ? 'Especialidades diferentes ganham força quando compartilham uma direção.' : 'Atuação regional sem fórmulas copiadas de uma cidade para outra.'
   const cards = items.map((item) => isServices
-    ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${owners[item.owner].name} ↗</b></a>`
-    : `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.focus}</p><b>CONHECER ↗</b></a>`).join('')
+    ? `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.promise}</p><b>${owners[item.owner].name} &#x2197;&#xfe0e;</b></a>`
+    : `<a href="${item.slug}/"><span>${item.eyebrow}</span><h2>${item.name}</h2><p>${item.focus}</p><b>CONHECER &#x2197;&#xfe0e;</b></a>`).join('')
   const category = isServices ? 'Serviços' : 'Cidades'
   const canonicalPath = isServices ? '/servicos/' : '/cidades/'
   const url = `${origin}${canonicalPath}`
   const breadcrumbId = `${url}#breadcrumb`
-  const breadcrumb = `<a href="${base}">Início</a><span>→</span><strong>${category}</strong>`
+  const breadcrumb = `<a href="${base}">Início</a><span>&#x2192;&#xfe0e;</span><strong>${category}</strong>`
   const content = `<section class="index-hero detail-section"><span class="detail-kicker">${isServices ? 'CAPACIDADES ORIZ' : 'PRESENÇA REGIONAL'}</span><h1>${h1}</h1><p>${intro}</p></section><section class="detail-section directory-grid">${cards}</section>${cta(base, isServices ? 'Qual frente precisa ganhar direção agora?' : 'Onde está o próximo movimento da sua marca?')}`
   return shell({
     title, description, base, bodyClass: `${isServices ? 'services' : 'cities'}-index`, breadcrumb, content,
